@@ -5,6 +5,7 @@ import com.kt.loginktdemo.business.SampleBusinessAPI.Expr
 import com.kt.loginktdemo.business.enums.RbgColor
 import com.kt.loginktdemo.business.enums.RbgColor.*
 import com.kt.loginktdemo.business.obj.Payroll
+import com.kt.loginktdemo.domain.Person
 import org.springframework.stereotype.Component
 import strings.lastChar
 import strings.orElseEmpty
@@ -12,9 +13,19 @@ import strings.orElseEmpty
 @Component
 class SampleBusinessAPIImpl : SampleBusinessAPI {
     override fun find(): String {
-        getThreeTimes(Person("Alice", 29, Company("abc", Address("Elsenheimerstrasse 47", 80687, "Muenchen"))))
-        getThreeTimes(Person("Alice", 29, Company("abc", null)))
-        getThreeTimes(Person("Alice", 29, null))
+        val contracts = listOf(Person("Alice", "Smith", "123-4567")
+            , Person("Bob", "Johnson", null))
+
+        val contactListFilters = Person.ContractListFilters()
+        with(contactListFilters) {
+            prefix = "A"
+            onlyWithPhoneNumber = true
+        }
+        println(contracts.filter(contactListFilters.getPredicate()))
+
+        getThreeTimes(PersonN("Alice", 29, Company("abc", Address("Elsenheimerstrasse 47", 80687, "Muenchen"))))
+        getThreeTimes(PersonN("Alice", 29, Company("abc", null)))
+        getThreeTimes(PersonN("Alice", 29, null))
 
         val superUser = SuperUser("abc.biz@gmail.com", 123, "abc")
 
@@ -95,10 +106,10 @@ class SampleBusinessAPIImpl : SampleBusinessAPI {
 
     class Address(val streetAddress: String, val zipCode: Int, val city: String)
     class Company(val name: String, val address: Address?)
-    class Person(val name: String, val age: Int, val company: Company?)
+    class PersonN(val name: String, val age: Int, val company: Company?)
 
 
-    fun getThreeTimes(person: Person) {
+    fun getThreeTimes(person: PersonN) {
         // TODO これはNG なければ落ちるし、、
 //        val zipCode0 = person.company!!.address!!.zipCode
         // TODO letで書き換え
