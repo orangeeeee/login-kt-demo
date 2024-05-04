@@ -25,6 +25,7 @@ class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
     override fun find(): String {
 
         PersonManager.addPerson(Person("ken", "x", "0901231"))
+        PersonManager.addPerson(Person("pur", "x", "0901231"))
 
         personBusinessAPI.add()
 
