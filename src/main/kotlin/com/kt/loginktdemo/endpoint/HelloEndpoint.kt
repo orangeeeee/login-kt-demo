@@ -11,7 +11,6 @@ import java.time.LocalDateTime
 @RequestMapping("kts")
 class HelloEndpoint(private val sampleBusinessAPI: SampleBusinessAPI) {
 
-
     @GetMapping("get")
     fun helloEndpoint(): HelloResponse {
 

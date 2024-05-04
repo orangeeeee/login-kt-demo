@@ -1,24 +1,36 @@
 package com.kt.loginktdemo.business.impl
 
+import com.kt.loginktdemo.business.PersonBusinessAPI
 import com.kt.loginktdemo.business.SampleBusinessAPI
 import com.kt.loginktdemo.business.SampleBusinessAPI.Expr
 import com.kt.loginktdemo.business.enums.RbgColor
 import com.kt.loginktdemo.business.enums.RbgColor.*
 import com.kt.loginktdemo.business.obj.Payroll
 import com.kt.loginktdemo.domain.Person
+import com.kt.loginktdemo.`object`.PersonManager
 import com.kt.loginktdemo.type.PurchaseNumber
 import org.springframework.stereotype.Component
 import strings.lastChar
 import strings.orElseEmpty
 import kotlin.reflect.KAnnotatedElement
 
-private fun <E> List<E>.forEach(action: Unit) {
-
-}
-
 @Component
-class SampleBusinessAPIImpl : SampleBusinessAPI {
+class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
+    : SampleBusinessAPI {
+
+    private fun <E> List<E>.forEach(action: Unit) {
+
+    }
+
     override fun find(): String {
+
+        PersonManager.addPerson(Person("ken", "x", "0901231"))
+        PersonManager.addPerson(Person("joo", "z", ""))
+
+        personBusinessAPI.add()
+
+        // すべてのクラスの処理で追加されたPersonを取得できる。
+        println(PersonManager.getAllPersons())
 
         mumeiFunc()
 
