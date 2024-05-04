@@ -6,15 +6,26 @@ import com.kt.loginktdemo.business.enums.RbgColor
 import com.kt.loginktdemo.business.enums.RbgColor.*
 import com.kt.loginktdemo.business.obj.Payroll
 import com.kt.loginktdemo.domain.Person
+import com.kt.loginktdemo.type.PurchaseNumber
 import org.springframework.stereotype.Component
 import strings.lastChar
 import strings.orElseEmpty
+import kotlin.reflect.KAnnotatedElement
+
+private fun <E> List<E>.forEach(action: Unit) {
+
+}
 
 @Component
 class SampleBusinessAPIImpl : SampleBusinessAPI {
     override fun find(): String {
-        val contracts = listOf(Person("Alice", "Smith", "123-4567")
-            , Person("Bob", "Johnson", null))
+
+        mumeiFunc()
+
+        val contracts = listOf(
+            Person("Alice", "Smith", "123-4567"), Person("Bob", "Johnson", null)
+        )
+        contracts.forEach(myInlineFun { writeFile() })
 
         val contactListFilters = Person.ContractListFilters()
         with(contactListFilters) {
@@ -43,7 +54,43 @@ class SampleBusinessAPIImpl : SampleBusinessAPI {
 
 
         val retStr = "abc"
+
         return retStr
+    }
+
+    fun reflectSp() {
+        val person = Person("Alice", "Smith", "123-4567")
+        val kClass = person.javaClass.kotlin
+        kClass.simpleName
+        //Person
+        kClass.members.forEach { println(it.name) }
+
+    }
+
+    // Higher order function example: Calculator
+    fun calculate(x: Int, y: Int, operation: (Int, Int) -> Int): Int {
+        return operation(x, y)
+    }
+
+    fun add(x: Int, y: Int): Int {
+        return x + y
+    }
+
+    fun subtract(x: Int, y: Int): Int {
+        return x - y
+    }
+
+    fun multiply(x: Int, y: Int): Int {
+        return x * y
+    }
+
+    fun writeFile(): Unit {
+        val result1 = calculate(10, 5, ::add)
+        println("Addition: $result1") // Output: Addition: 15
+        val result2 = calculate(10, 5, ::subtract)
+        println("Subtraction: $result2") // Output: Subtraction: 5
+        val result3 = calculate(10, 5, ::multiply)
+        println("Multiplication: $result3") // Output: Multiplication: 50
     }
 
     fun foo(s: String?) {
@@ -110,6 +157,8 @@ class SampleBusinessAPIImpl : SampleBusinessAPI {
 
 
     fun getThreeTimes(person: PersonN) {
+
+        myInlineFun { myInlineFun { println("in myInlineFun") } }
         // TODO これはNG なければ落ちるし、、
 //        val zipCode0 = person.company!!.address!!.zipCode
         // TODO letで書き換え
@@ -120,4 +169,108 @@ class SampleBusinessAPIImpl : SampleBusinessAPI {
 
         println("xxx")
     }
+
+    class SiteVisit(val path: String, val duration: Double, val os: String)
+
+
+    private inline fun List<SiteVisit>.averageDurationFor(predicate: (SiteVisit) -> Boolean) =
+        filter(predicate).map(SiteVisit::duration).average()
+
+    @Override
+    private inline fun myInlineFun(block: () -> Unit) {
+        print("Hello, ")
+        block()
+    }
+
+    private fun executeMyInlineFun() {
+        val contracts = listOf(
+            Person("Alice", "Smith", "123-4567"), Person("Bob", "Johnson", null)
+        )
+        contracts.forEach(myInlineFun { writeFile() })
+
+    }
+
+
+    fun interface MathOperation {
+        fun operation(a: Int, b: Int): Int
+    }
+
+    fun sampleLGFunc(ints: List<Int>) {
+
+        ints.filter(fun(item) = item > 0)
+
+        ints.forEach(fun(value) {
+            println("")
+        })
+    }
+}
+
+
+fun createPersonList(): List<Person> = listOf(
+    Person("Alice", "Smith", "123-4567"), Person("Bob", "Johnson", null)
+)
+
+fun mumeiFunc() {
+    supplerArgs(::createPersonList)
+    supplerArgs { createPersonList() }
+
+    val xxx: String = supplyWithTiming { SuppliedType() }.toString()
+
+    /**  無名関数呼び出し（引数あり、戻り値あり）*/
+    stringArgs(fun(xxx) = createPersonList())
+    /**  無名関数呼び出し（引数なし、戻り値あり）*/
+    supplerArgs(fun() = createPersonList())
+    supplerReturnStringArgs(fun() = "returnString")
+    supplerReturnStringArgs(fun() = "returnString" + "returnString2")
+}
+
+fun supplerReturnStringArgs(kFunction0: () -> String) {
+
+    print("supplerArgs")
+}
+
+fun supplerArgs(kFunction0: () -> List<Person>) {
+
+    print("supplerArgs")
+}
+
+fun stringArgs(sp: (String) -> List<Person>) {
+    print(sp("stringArgs"))
+}
+
+
+class SuppliedType {
+
+}
+// TODO TypeAliasを使うとコールバックに型名を付ける事が出来るので、型安全かつ可読性が向上する
+typealias MySpecialSupplier = () -> SuppliedType
+
+fun supplyWithTiming(supplier: MySpecialSupplier): SuppliedType {
+    val start = System.currentTimeMillis()
+    val result = supplier()
+    println("Time taken: ${System.currentTimeMillis() - start} ms")
+    return result
+}
+
+// TODO ailiasでこれがエラーになるならいらんじゃん。。
+/**
+ * typealias は長いものを別名で書くだけ
+ **/
+fun findBy(purchaseNumber: PurchaseNumber) {
+}
+//
+//// TODO ailiasでこれがエラーになるならいらんじゃん。。
+//fun findBy(blukNumber: BlkNumber) {
+//
+//}
+
+// TODO これはエラーになる
+fun <T> copyData(source: MutableList<out T>, destination: MutableList<T>) {
+    for (item in source) {
+        destination.add(item)
+    }
+}
+
+inline fun <reified T> KAnnotatedElement.findAnnotation(): T? {
+    return annotations.filterIsInstance<T>().firstOrNull()
 }
