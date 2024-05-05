@@ -6,6 +6,7 @@ import com.kt.loginktdemo.business.SampleBusinessAPI.Expr
 import com.kt.loginktdemo.business.enums.RbgColor
 import com.kt.loginktdemo.business.enums.RbgColor.*
 import com.kt.loginktdemo.business.obj.Payroll
+import com.kt.loginktdemo.delegate.DelegateExample
 import com.kt.loginktdemo.domain.Person
 import com.kt.loginktdemo.`object`.PersonManager
 import com.kt.loginktdemo.type.PurchaseNumber
@@ -23,6 +24,8 @@ class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
     }
 
     override fun find(): String {
+
+        delegateSample3()
 
         PersonManager.addPerson(Person("ken", "x", "0901231"))
         PersonManager.addPerson(Person("pur", "x", "0901231"))
@@ -68,6 +71,14 @@ class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
         val retStr = "abc"
 
         return retStr
+    }
+
+    private fun delegateSample3() {
+        val delegate = DelegateExample()
+        println("before Lazy access")
+        println(delegate.heavy)
+        println("after Lazy access")
+        println(delegate.heavy)
     }
 
     fun reflectSp() {
