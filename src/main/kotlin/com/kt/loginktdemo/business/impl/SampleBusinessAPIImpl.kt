@@ -6,7 +6,7 @@ import com.kt.loginktdemo.business.SampleBusinessAPI.Expr
 import com.kt.loginktdemo.business.enums.RbgColor
 import com.kt.loginktdemo.business.enums.RbgColor.*
 import com.kt.loginktdemo.business.obj.Payroll
-import com.kt.loginktdemo.delegate.DelegateExample
+import com.kt.loginktdemo.delegate.*
 import com.kt.loginktdemo.domain.Person
 import com.kt.loginktdemo.`object`.PersonManager
 import com.kt.loginktdemo.type.PurchaseNumber
@@ -19,13 +19,18 @@ import kotlin.reflect.KAnnotatedElement
 class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
     : SampleBusinessAPI {
 
-    private fun <E> List<E>.forEach(action: Unit) {
-
-    }
+    private fun <E> List<E>.forEach(action: Unit) {}
 
     override fun find(): String {
 
         delegateSample3()
+
+        delegateSample4()
+
+        delegateSample5()
+
+        val sound = Sound(Light("abc"))
+        sound.play()
 
         PersonManager.addPerson(Person("ken", "x", "0901231"))
         PersonManager.addPerson(Person("pur", "x", "0901231"))
@@ -71,6 +76,26 @@ class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
         val retStr = "abc"
 
         return retStr
+    }
+
+    private fun delegateSample5() {
+        val userMap = mapOf(
+            "name" to "田中太郎",
+            "age" to 30,
+            "email" to "tanaka@example.com"
+        )
+        val user = DynamicProperties(userMap)
+        println("名前: ${user.name}")
+        println("年齢: ${user.age}")
+        println("メール: ${user.email ?: "未登録"}")
+    }
+
+    private fun delegateSample4() {
+        val historyUser = HistoryUser()
+        historyUser.name = "abc"
+        println("historyUser.name = ${historyUser.name}")
+        historyUser.name = "cbd"
+        println("historyUser.name = ${historyUser.name}")
     }
 
     private fun delegateSample3() {
