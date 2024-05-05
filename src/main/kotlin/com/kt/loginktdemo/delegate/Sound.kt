@@ -1,7 +1,7 @@
 package com.kt.loginktdemo.delegate
 
-open class Sound(private val speaker: Speaker) : Speaker by speaker {
-    fun play() {
-        println("Sound is playing")
+open class Sound : SoundBehavior {
+    override fun makeSound() {
+        println("音を鳴らす!")
     }
 }
