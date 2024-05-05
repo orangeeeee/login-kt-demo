@@ -29,8 +29,10 @@ class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
 
         delegateSample5()
 
-        val sound = Sound(Light("abc"))
-        sound.play()
+        val robot = Robot(Sound(), Light())
+
+        robot.makeSound() // SoundBehaviorのmakeSound()を呼び出す
+        robot.illuminate() // LightBehaviorのilluminate()を呼び出す
 
         PersonManager.addPerson(Person("ken", "x", "0901231"))
         PersonManager.addPerson(Person("pur", "x", "0901231"))

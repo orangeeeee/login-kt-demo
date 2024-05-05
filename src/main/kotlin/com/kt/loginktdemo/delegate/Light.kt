@@ -1,7 +1,7 @@
 package com.kt.loginktdemo.delegate
 
-class Light(override val name: String) : Speaker {
-    fun illuminate() {
-        println("illuminate is on")
+open class Light : LightBehavior {
+    override fun illuminate() {
+        println("光を放つ!")
     }
 }
