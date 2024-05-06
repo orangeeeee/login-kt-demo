@@ -29,8 +29,9 @@ class SampleBusinessAPIImpl(val personBusinessAPI: PersonBusinessAPI)//
 
         delegateSample5()
 
-        val robot = Robot(Sound(), Light())
+        val robot = Robot(Sound(), DownLight())
 
+        // 計算ロジックのContext見たい。。。
         robot.makeSound() // SoundBehaviorのmakeSound()を呼び出す
         robot.illuminate() // LightBehaviorのilluminate()を呼び出す
 
