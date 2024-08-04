@@ -25,6 +25,10 @@ repositories {
 }
 
 dependencies {
+    val awsSdkVersion = "2.20.135"
+    implementation("software.amazon.awssdk:sts:$awsSdkVersion")
+    implementation("software.amazon.awssdk:s3:$awsSdkVersion")
+    implementation("software.amazon.awssdk:cognitoidentityprovider:$awsSdkVersion")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
