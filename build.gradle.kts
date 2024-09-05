@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    val awsSdkVersion = "2.20.135"
+    val awsSdkVersion = "2.27.20"
     implementation("software.amazon.awssdk:sts:$awsSdkVersion")
     implementation("software.amazon.awssdk:s3:$awsSdkVersion")
     implementation("software.amazon.awssdk:sfn:$awsSdkVersion")
